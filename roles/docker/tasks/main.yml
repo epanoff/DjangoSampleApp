@@ -1,0 +1,11 @@
+---
+#it is very awfull, nobody know what version docker in this host, but requirements specification has it.
+- name: Check if docker is installed
+  command: if [ "$(rpm -qa | grep docker-engine)" != "" ] ; then echo "installed"; else echo "no";fi
+  register: dock_check
+
+- name: install docker if host has no docker-engine
+  yum: name=docker-engine  state=latest
+  when: dock_check.stdout.find('installed') != -1
+  notify:
+    - install docker py
