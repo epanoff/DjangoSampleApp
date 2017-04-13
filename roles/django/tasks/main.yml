@@ -1,0 +1,19 @@
+---
+- name: create build directory
+  file: state=directory path="/opt/build/"
+
+- name: create settings file
+  template: src="settings.j2" dest="/opt/build/settings.py"
+
+- name: create Dockerfile
+  copy: src="Dockerfile" dest="/opt/build/Dockerfile"
+
+- name: build django container
+  docker_image: name=django path=/opt/build/
+
+- name: create postgresql container
+  docker_container:
+    name: "django"
+    image: django
+    state: started
+    restart_policy: always
