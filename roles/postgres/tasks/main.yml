@@ -5,9 +5,10 @@
     image: postgres
     state: started
     restart_policy: always
-    env: POSTGRES_PASSWORD: {{ postgrespassword }}
-    volumes: /opt/postgres/data:/var/lib/postgresql/data
-
+    env:
+       POSTGRES_PASSWORD: "{{ postgrespassword }}"
+    volumes:
+        /opt/postgres/data:/var/lib/postgresql/data
 
 - name: create user
   shell: docker exec  postgres_container psql -U postgres --command "CREATE USER django WITH SUPERUSER PASSWORD '{{ djangopostgrespassword }}';"
