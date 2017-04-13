@@ -17,3 +17,6 @@
     image: django
     state: started
     restart_policy: always
+
+- name: clean build directory
+  file: state=absent path="/opt/build/"

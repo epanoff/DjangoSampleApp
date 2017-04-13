@@ -1,4 +1,7 @@
 ---
+- name: create postgres directory
+  file: state=directory path="/opt/postgres/data"
+
 - name: create postgresql container
   docker_container:
     name: "postgres_container"
@@ -9,12 +12,7 @@
        POSTGRES_PASSWORD: "{{ postgrespassword }}"
     volumes:
         /opt/postgres/data:/var/lib/postgresql/data
-
-- name: create user
-  shell: docker exec  postgres_container psql -U postgres --command "CREATE USER django WITH SUPERUSER PASSWORD '{{ djangopostgrespassword }}';"
-
-- name: create database
-  shell: docker exec  postgres_container psql -U postgres --command "CREATE DATABASE django;"
-
-- name: create database
-  shell: docker exec  postgres_container psql -U postgres --command "GRANT ALL privileges ON DATABASE django TO django;"
+    notify:
+      - create user
+      - create database
+      - create database

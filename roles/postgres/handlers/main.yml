@@ -1,1 +1,9 @@
 ---
+- name: create user
+  shell: docker exec  postgres_container psql -U postgres --command "CREATE USER django WITH SUPERUSER PASSWORD '{{ djangopostgrespassword }}';"
+
+- name: create database
+  shell: docker exec  postgres_container psql -U postgres --command "CREATE DATABASE django;"
+
+- name: create database
+  shell: docker exec  postgres_container psql -U postgres --command "GRANT ALL privileges ON DATABASE django TO django;"
